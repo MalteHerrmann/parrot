@@ -1,65 +1,43 @@
 /// The `llm` module contains the required logic
 /// to interact with a generalized selection of
 /// supported models.
-use crate::error::LLMError;
+mod anthropic;
+mod claude;
+mod cursor;
+mod openai;
 
-use std::{env::var, process::Command};
+use crate::{
+    error::LLMError,
+    llm::{anthropic::Anthropic, claude::Claude, cursor::CursorCLI, openai::OpenAI},
+};
 
-/// Promptable defines the required functionality
+/// Prompt defines the required functionality
 /// to interact with a language model.
-pub trait Promptable {
+pub trait Model {
     fn get_name(&self) -> String;
-    fn prompt(&self, input: str) -> Result<(), LLMError>;
+    fn prompt(&self, input: &str) -> Result<String, LLMError>;
 }
 
 /// Returns the available models in the current
 /// system context.
-pub fn get_available_models() -> Result<Vec<String>, LLMError> {
-    let mut models = vec![];
+pub fn get_available_models() -> Result<Vec<Box<dyn Model>>, LLMError> {
+    let mut models: Vec<Box<dyn Model>> = vec![];
 
-    if check_for_anthropic_key() {
-        models.push("anthropic".to_string())
+    if let Ok(m) = Anthropic::init() {
+        models.push(Box::new(m))
     }
 
-    if check_for_claude() {
-        models.push("claude".to_string())
+    if let Ok(m) = Claude::init() {
+        models.push(Box::new(m))
     }
 
-    if check_for_cursor_agent() {
-        models.push("cursor-agent".to_string())
+    if let Ok(m) = CursorCLI::init() {
+        models.push(Box::new(m))
     }
 
-    if check_for_openai_key() {
-        models.push("openai".to_string())
+    if let Ok(m) = OpenAI::init() {
+        models.push(Box::new(m))
     }
 
     Ok(models)
-}
-
-fn check_for_anthropic_key() -> bool {
-    match var("ANTHROPIC_API_KEY") {
-        Ok(v) => v != "",
-        Err(_) => false,
-    }
-}
-
-fn check_for_claude() -> bool {
-    match Command::new("claude").arg("-h").output() {
-        Ok(_) => true,
-        Err(_) => false,
-    }
-}
-
-fn check_for_cursor_agent() -> bool {
-    match Command::new("cursor-agent").arg("-h").output() {
-        Ok(_) => true,
-        Err(_) => false,
-    }
-}
-
-fn check_for_openai_key() -> bool {
-    match var("OPENAI_API_KEY") {
-        Ok(v) => v != "",
-        Err(_) => false,
-    }
 }
