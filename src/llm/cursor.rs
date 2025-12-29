@@ -2,14 +2,16 @@ use crate::{error::LLMError, llm::Model};
 
 use std::process::Command;
 
+const CURSOR_CLI_NAME: &str = "cursor-agent";
+
 pub struct CursorCLI {}
 
 impl CursorCLI {
     pub fn init() -> Result<Self, LLMError> {
-        Command::new("cursor-agent")
+        Command::new(CURSOR_CLI_NAME)
             .arg("-h")
             .output()
-            .map_err(|_| LLMError::CLINotFound("cursor-agent".into()))?;
+            .map_err(|_| LLMError::CLINotFound(CURSOR_CLI_NAME.into()))?;
 
         Ok(Self {})
     }
@@ -21,7 +23,7 @@ impl Model for CursorCLI {
     }
 
     fn prompt(&self, input: &str) -> Result<String, LLMError> {
-        let out = Command::new("cursor-agent")
+        let out = Command::new(CURSOR_CLI_NAME)
             .args([input, "-p"])
             .output()
             .map_err(|e| LLMError::Prompt(e.to_string()))?;
