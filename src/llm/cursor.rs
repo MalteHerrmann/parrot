@@ -20,7 +20,12 @@ impl Model for CursorCLI {
         return "Cursor CLI".into();
     }
 
-    fn prompt(&self, _: &str) -> Result<String, LLMError> {
-        unimplemented!("cursor cli")
+    fn prompt(&self, input: &str) -> Result<String, LLMError> {
+        let out = Command::new("cursor-agent")
+            .args([input, "-p"])
+            .output()
+            .map_err(|e| LLMError::Prompt(e.to_string()))?;
+
+        Ok(String::from_utf8(out.stdout)?)
     }
 }
