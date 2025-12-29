@@ -1,4 +1,7 @@
-use crate::{error::LLMError, llm::Model};
+use crate::{
+    error::LLMError,
+    llm::{Model, ModelFactory},
+};
 
 use std::process::Command;
 
@@ -6,8 +9,8 @@ const CURSOR_CLI_NAME: &str = "cursor-agent";
 
 pub struct CursorCLI {}
 
-impl CursorCLI {
-    pub fn init() -> Result<Self, LLMError> {
+impl ModelFactory for CursorCLI {
+    fn init() -> Result<Self, LLMError> {
         Command::new(CURSOR_CLI_NAME)
             .arg("-h")
             .output()
@@ -19,7 +22,7 @@ impl CursorCLI {
 
 impl Model for CursorCLI {
     fn get_name(&self) -> String {
-        return "Cursor CLI".into();
+        "Cursor CLI".into()
     }
 
     fn prompt(&self, input: &str) -> Result<String, LLMError> {

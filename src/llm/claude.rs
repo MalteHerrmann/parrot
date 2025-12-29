@@ -1,13 +1,16 @@
 use std::process::Command;
 
-use crate::{error::LLMError, llm::Model};
+use crate::{
+    error::LLMError,
+    llm::{Model, ModelFactory},
+};
 
 const CLAUDE_CLI_NAME: &str = "claude";
 
 pub struct Claude {}
 
-impl Claude {
-    pub fn init() -> Result<Self, LLMError> {
+impl ModelFactory for Claude {
+    fn init() -> Result<Self, LLMError> {
         Command::new(CLAUDE_CLI_NAME)
             .arg("-h")
             .output()
@@ -19,7 +22,7 @@ impl Claude {
 
 impl Model for Claude {
     fn get_name(&self) -> String {
-        return "Claude CLI".into();
+        "Claude CLI".into()
     }
 
     fn prompt(&self, input: &str) -> Result<String, LLMError> {

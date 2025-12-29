@@ -11,7 +11,22 @@ use crate::{
     llm::{anthropic::Anthropic, claude::Claude, cursor::CursorCLI, openai::OpenAI},
 };
 
-/// Prompt defines the required functionality
+/// Defines the expected interface for the initialization
+/// of the different supported models.
+///
+/// Note: It's required to separate this from the actual model
+/// trait, that defines the interface for interaction with the
+/// LLMs. This is because we store the actual `Model` in a boxed
+/// vector.
+///
+/// To allow this, the instances of `Model` have to be `dyn`-compatible,
+/// which requires the trait not to be `Sized` as it is described here:
+/// https://doc.rust-lang.org/reference/items/traits.html#dyn-compatibility.
+pub trait ModelFactory: Model + Sized {
+    fn init() -> Result<Self, LLMError>;
+}
+
+/// Defines the required functionality
 /// to interact with a language model.
 pub trait Model {
     fn get_name(&self) -> String;
