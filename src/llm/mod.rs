@@ -28,7 +28,7 @@ pub trait ModelFactory: Model + Sized {
 
 /// Defines the required functionality
 /// to interact with a language model.
-pub trait Model {
+pub trait Model: Send + Sync {
     fn get_name(&self) -> String;
     fn prompt(&self, input: &str) -> Result<String, LLMError>;
 }
