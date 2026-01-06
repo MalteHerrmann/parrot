@@ -1,6 +1,6 @@
 use crate::error::LLMError;
 
-use super::{Model, ModelFactory};
+use super::{constants::names, Model, ModelFactory};
 
 use std::env::var;
 
@@ -18,7 +18,7 @@ impl ModelFactory for Anthropic {
 
 impl Model for Anthropic {
     fn get_name(&self) -> String {
-        "Anthropic API".into()
+        names::ANTHROPIC.into()
     }
 
     fn prompt(&self, _: &str) -> Result<String, LLMError> {

@@ -2,7 +2,7 @@ use std::env::var;
 
 use crate::{
     error::LLMError,
-    llm::{Model, ModelFactory},
+    llm::{constants::names, Model, ModelFactory},
 };
 
 pub struct OpenAI {
@@ -18,7 +18,7 @@ impl ModelFactory for OpenAI {
 
 impl Model for OpenAI {
     fn get_name(&self) -> String {
-        "OpenAI API".into()
+        names::OPENAI.into()
     }
 
     fn prompt(&self, _: &str) -> Result<String, LLMError> {

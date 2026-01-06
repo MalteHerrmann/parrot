@@ -6,6 +6,10 @@ mod claude;
 mod cursor;
 mod openai;
 
+/// Model name constants that can be used to check against
+/// model names in external projects.
+pub mod constants;
+
 use crate::{
     error::LLMError,
     llm::{anthropic::Anthropic, claude::Claude, cursor::CursorCLI, openai::OpenAI},
