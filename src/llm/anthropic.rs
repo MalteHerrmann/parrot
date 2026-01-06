@@ -2,6 +2,8 @@ use crate::error::LLMError;
 
 use super::{Model, ModelFactory, constants::names};
 
+use async_trait::async_trait;
+
 use std::env::var;
 
 const ANTHROPIC_API_KEY: &str = "ANTHROPIC_API_KEY";
@@ -21,12 +23,13 @@ impl ModelFactory for Anthropic {
     }
 }
 
+#[async_trait]
 impl Model for Anthropic {
     fn get_name(&self) -> String {
         names::ANTHROPIC.into()
     }
 
-    fn prompt(&self, _: &str) -> Result<String, LLMError> {
+    async fn prompt(&self, _: &str) -> Result<String, LLMError> {
         unimplemented!("anthropic api")
     }
 }

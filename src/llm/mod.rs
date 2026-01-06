@@ -10,6 +10,8 @@ mod openai;
 /// model names in external projects.
 pub mod constants;
 
+use async_trait::async_trait;
+
 use crate::{
     error::LLMError,
     llm::{anthropic::Anthropic, claude::Claude, cursor::CursorCLI, openai::OpenAI},
@@ -21,7 +23,7 @@ use crate::{
 /// Note: It's required to separate this from the actual model
 /// trait, that defines the interface for interaction with the
 /// LLMs. This is because we store the actual `Model` in a boxed
-/// vector.
+/// vector in the `get_available_models` method.
 ///
 /// To allow this, the instances of `Model` have to be `dyn`-compatible,
 /// which requires the trait not to be `Sized` as it is described here:
@@ -32,9 +34,10 @@ pub trait ModelFactory: Model + Sized {
 
 /// Defines the required functionality
 /// to interact with a language model.
+#[async_trait]
 pub trait Model: Send + Sync {
     fn get_name(&self) -> String;
-    fn prompt(&self, input: &str) -> Result<String, LLMError>;
+    async fn prompt(&self, input: &str) -> Result<String, LLMError>;
 }
 
 /// Returns the available models in the current
