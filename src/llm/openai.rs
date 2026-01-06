@@ -5,7 +5,7 @@ use crate::{
     llm::{Model, ModelFactory, constants::names},
 };
 
-const OPENAI_API_KEY: &'static str = "OPENAI_API_KEY";
+const OPENAI_API_KEY: &str = "OPENAI_API_KEY";
 
 pub struct OpenAI {
     api_key: String,

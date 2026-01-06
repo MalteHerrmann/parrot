@@ -5,7 +5,7 @@ use crate::{
     llm::{constants::names, Model, ModelFactory},
 };
 
-const CLAUDE_CLI_NAME: &'static str = "claude";
+const CLAUDE_CLI_NAME: &str = "claude";
 
 pub struct Claude {}
 

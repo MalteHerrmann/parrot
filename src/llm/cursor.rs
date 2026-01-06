@@ -5,7 +5,7 @@ use crate::{
 
 use std::process::Command;
 
-const CURSOR_CLI_NAME: &'static str = "cursor-agent";
+const CURSOR_CLI_NAME: &str = "cursor-agent";
 
 pub struct CursorCLI {}
 
