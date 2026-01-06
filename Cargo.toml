@@ -4,4 +4,8 @@ version = "0.0.2"
 edition = "2024"
 
 [dependencies]
+async-trait = "0.1.89"
 thiserror = "2.0.17"
+
+[dev-dependencies]
+tokio = { version = "1.49.0", features = ["full"] }

@@ -1,5 +1,7 @@
 use std::env::var;
 
+use async_trait::async_trait;
+
 use crate::{
     error::LLMError,
     llm::{Model, ModelFactory, constants::names},
@@ -22,12 +24,13 @@ impl ModelFactory for OpenAI {
     }
 }
 
+#[async_trait]
 impl Model for OpenAI {
     fn get_name(&self) -> String {
         names::OPENAI.into()
     }
 
-    fn prompt(&self, _: &str) -> Result<String, LLMError> {
+    async fn prompt(&self, _: &str) -> Result<String, LLMError> {
         unimplemented!("open ai api")
     }
 }

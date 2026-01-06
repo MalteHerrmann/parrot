@@ -1,3 +1,5 @@
+use async_trait::async_trait;
+
 use crate::{
     error::LLMError,
     llm::{Model, ModelFactory, constants::names},
@@ -20,12 +22,13 @@ impl ModelFactory for CursorCLI {
     }
 }
 
+#[async_trait]
 impl Model for CursorCLI {
     fn get_name(&self) -> String {
         names::CURSOR.into()
     }
 
-    fn prompt(&self, input: &str) -> Result<String, LLMError> {
+    async fn prompt(&self, input: &str) -> Result<String, LLMError> {
         let out = Command::new(CURSOR_CLI_NAME)
             .args([input, "-p"])
             .output()
