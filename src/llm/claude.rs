@@ -2,7 +2,7 @@ use std::process::Command;
 
 use crate::{
     error::LLMError,
-    llm::{constants::names, Model, ModelFactory},
+    llm::{Model, ModelFactory, constants::names},
 };
 
 const CLAUDE_CLI_NAME: &str = "claude";

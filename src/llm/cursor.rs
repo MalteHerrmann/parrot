@@ -1,6 +1,6 @@
 use crate::{
     error::LLMError,
-    llm::{constants::names, Model, ModelFactory},
+    llm::{Model, ModelFactory, constants::names},
 };
 
 use std::process::Command;
