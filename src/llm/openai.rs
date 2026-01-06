@@ -2,8 +2,10 @@ use std::env::var;
 
 use crate::{
     error::LLMError,
-    llm::{constants::names, Model, ModelFactory},
+    llm::{Model, ModelFactory, constants::names},
 };
+
+const OPENAI_API_KEY: &'static str = "OPENAI_API_KEY";
 
 pub struct OpenAI {
     api_key: String,
@@ -11,7 +13,11 @@ pub struct OpenAI {
 
 impl ModelFactory for OpenAI {
     fn init() -> Result<Self, LLMError> {
-        let api_key = var("OPENAI_API_KEY")?;
+        let api_key = var(OPENAI_API_KEY)?.trim().to_string();
+        if api_key.is_empty() {
+            return Err(LLMError::EmptyCredential(OPENAI_API_KEY.into()));
+        }
+
         Ok(Self { api_key })
     }
 }

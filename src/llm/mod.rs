@@ -39,6 +39,9 @@ pub trait Model: Send + Sync {
 
 /// Returns the available models in the current
 /// system context.
+///
+/// TODO: ideally this should also include the lifeness check for the found models (e.g. sending a
+/// simple prompt).
 pub fn get_available_models() -> Result<Vec<Box<dyn Model>>, LLMError> {
     let mut models: Vec<Box<dyn Model>> = vec![];
 
