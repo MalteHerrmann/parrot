@@ -2,10 +2,10 @@ use std::process::Command;
 
 use crate::{
     error::LLMError,
-    llm::{Model, ModelFactory},
+    llm::{constants::names, Model, ModelFactory},
 };
 
-const CLAUDE_CLI_NAME: &str = "claude";
+const CLAUDE_CLI_NAME: &'static str = "claude";
 
 pub struct Claude {}
 
@@ -22,7 +22,7 @@ impl ModelFactory for Claude {
 
 impl Model for Claude {
     fn get_name(&self) -> String {
-        "Claude CLI".into()
+        names::CLAUDE.into()
     }
 
     fn prompt(&self, input: &str) -> Result<String, LLMError> {

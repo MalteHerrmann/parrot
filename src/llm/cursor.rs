@@ -1,11 +1,11 @@
 use crate::{
     error::LLMError,
-    llm::{Model, ModelFactory},
+    llm::{constants::names, Model, ModelFactory},
 };
 
 use std::process::Command;
 
-const CURSOR_CLI_NAME: &str = "cursor-agent";
+const CURSOR_CLI_NAME: &'static str = "cursor-agent";
 
 pub struct CursorCLI {}
 
@@ -22,7 +22,7 @@ impl ModelFactory for CursorCLI {
 
 impl Model for CursorCLI {
     fn get_name(&self) -> String {
-        "Cursor CLI".into()
+        names::CURSOR.into()
     }
 
     fn prompt(&self, input: &str) -> Result<String, LLMError> {

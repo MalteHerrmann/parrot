@@ -8,6 +8,8 @@ pub enum LLMError {
     BytesConversion(#[from] FromUtf8Error),
     #[error("cli not found: {0}")]
     CLINotFound(String),
+    #[error("empty credential: {0}")]
+    EmptyCredential(String),
     #[error("missing env variable: {0}")]
     Env(#[from] VarError),
     #[error("failed to prompt: {0}")]

@@ -6,6 +6,10 @@ mod claude;
 mod cursor;
 mod openai;
 
+/// Model name constants that can be used to check against
+/// model names in external projects.
+pub mod constants;
+
 use crate::{
     error::LLMError,
     llm::{anthropic::Anthropic, claude::Claude, cursor::CursorCLI, openai::OpenAI},
@@ -35,6 +39,9 @@ pub trait Model: Send + Sync {
 
 /// Returns the available models in the current
 /// system context.
+///
+/// TODO: ideally this should also include the lifeness check for the found models (e.g. sending a
+/// simple prompt).
 pub fn get_available_models() -> Result<Vec<Box<dyn Model>>, LLMError> {
     let mut models: Vec<Box<dyn Model>> = vec![];
 
